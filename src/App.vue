@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        hello world
+        hello world，{{msg}}
     </div>
 </template>
 
@@ -8,8 +8,10 @@
 import 'normalize.css'
 import './test.scss'
 export default {
-//   data(){
-//     return {}
-//   }
+  data(){
+    return {
+      msg: '123'
+    }
+  }
 }
 </script>
