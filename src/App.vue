@@ -10,7 +10,7 @@ import './test.scss'
 export default {
   data(){
     return {
-      msg: '123'
+      msg: '123123123'
     }
   }
 }
