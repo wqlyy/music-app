@@ -3,7 +3,7 @@
       <router-link tag="div" class="tab-item" to="/recommend">
         <span class="tab-link">推荐</span>
       </router-link>
-       <router-link tag="div" class="tab-item" to="/singer">
+       <router-link :click="getData" tag="div" class="tab-item" to="/singer">
         <span class="tab-link">歌手</span>
       </router-link>
        <router-link tag="div" class="tab-item" to="/rank">
@@ -16,5 +16,15 @@
 </template>
 <script>
 import './index.scss'
-export default {}
+export default {
+  data(){
+    return {}
+  },
+  methods: {
+    getData(){
+      this.$route.get('/');
+      console.log(1111)
+    }
+  }
+}
 </script>
