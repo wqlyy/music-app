@@ -1,16 +1,14 @@
 <template>
     <div id="app">
-        hello world，{{msg}}
+        hello VUE,{{msg}}
     </div>
 </template>
 
 <script>
-import 'normalize.css'
-import './test.scss'
 export default {
   data(){
     return {
-      msg: '123123123'
+      msg: '模板'
     }
   }
 }
