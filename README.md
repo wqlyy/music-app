@@ -1,6 +1,6 @@
-# music-app
+# Vue 开发脚手架
 
-> Vue 音乐播放器
+> Vue 开发脚手架-sass定制版
 
 ## Build Setup
 
