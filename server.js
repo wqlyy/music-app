@@ -19,6 +19,6 @@ apiRoutes.get('/getDiscList', (req,res)=>{
 })
 app.use('/api', apiRoutes)
 app.listen(8081,() => {
-  console.log('api')
+  console.log('api loadded')
 })
 //end
