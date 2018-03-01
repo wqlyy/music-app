@@ -6,7 +6,7 @@
             <slider>
               <div v-for="item in recommendSlider" :key="item.id">
                 <a :href="item.linkUrl">
-                  <img :src="item.picUrl" @load="laodIamge" />
+                  <img class="needsclick" :src="item.picUrl" @load="laodIamge" />
                 </a>
               </div>
             </slider>
@@ -16,7 +16,7 @@
             <ul>
               <li v-for="item in discList" :key="item.dissid" class="item">
                 <div class="icon">
-                  <img width="60" height="60" :src="item.imgurl" :alt="item.dissname">
+                  <img width="60" height="60" v-lazy="item.imgurl" :alt="item.dissname">
                 </div>
                 <div class="text">
                   <h2 class="name" v-html="item.creator.name"></h2>
