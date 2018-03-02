@@ -5,20 +5,13 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import MusicList from '@/components/music-list'
 import {getSingerDetail} from '@/api/singer'
 import {ERR_OK} from '@/api/config'
 import {createSong} from '@/common/js/song.class'
-import MusicList from '@/components/music-list'
+import {mapGetters} from 'vuex'
+
 export default {
-  components: {
-    MusicList
-  },
-  data() {
-    return {
-      songs: []
-    }
-  },
   computed: {
     title() {
       return this.singer.name
@@ -30,34 +23,39 @@ export default {
       'singer'
     ])
   },
+  data() {
+    return {
+      songs: []
+    }
+  },
   created() {
-    console.log(this.singer);
     this._getDetail()
   },
   methods: {
     _getDetail() {
       if (!this.singer.id) {
-        this.$router.push('/singer');
+        this.$router.push('/singer')
         return
       }
       getSingerDetail(this.singer.id).then((res) => {
         if (res.code === ERR_OK) {
-          // console.log(res.data.list);
           this.songs = this._normalizeSongs(res.data.list)
-          console.log(this.songs)
         }
       })
     },
     _normalizeSongs(list) {
-      let ret = [];
+      let ret = []
       list.forEach((item) => {
-        let {musicData} = item;
+        let {musicData} = item
         if (musicData.songid && musicData.albummid) {
           ret.push(createSong(musicData))
         }
-      });
+      })
       return ret
     }
+  },
+  components: {
+    MusicList
   }
 }
 </script>
