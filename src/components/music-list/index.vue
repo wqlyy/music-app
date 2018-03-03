@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import Scroll from '@/base/scroll'
 import Loading from '@/base/loading'
 import SongList from '@/base/song-list'
