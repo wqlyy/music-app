@@ -1,7 +1,7 @@
 import {getPlayKey} from '@/api/singer'
 import {ERR_OK} from '@/api/config'
 import {getLyric} from '@/api/song'
-
+import {Base64} from 'js-base64'
 
 let key = ''
 getPlayKey().then((res) => {
@@ -22,11 +22,19 @@ export default class Song {
     this.url = url;
   }
   getLyric() {
-    getLyric(this.mid).then((res) => {
-      if (res.retcode === ERR_OK) {
-        this.lyric = res.lyric
-        console.log(this.lyric)
-      }
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+    return new Promise((resolve, reject) => {
+      getLyric(this.mid).then((res) => {
+        if (res.retcode === ERR_OK) {
+          this.lyric = Base64.decode(res.lyric)
+          // console.log(this.lyric)
+          resolve(this.lyric)
+        } else {
+          // reject('no lyric !!!')
+        }
+      })
     })
   }
 }
