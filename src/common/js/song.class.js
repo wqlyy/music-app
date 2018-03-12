@@ -1,5 +1,7 @@
 import {getPlayKey} from '@/api/singer'
 import {ERR_OK} from '@/api/config'
+import {getLyric} from '@/api/song'
+
 
 let key = ''
 getPlayKey().then((res) => {
@@ -18,6 +20,14 @@ export default class Song {
     this.duration = duration;
     this.image = image;
     this.url = url;
+  }
+  getLyric() {
+    getLyric(this.mid).then((res) => {
+      if (res.retcode === ERR_OK) {
+        this.lyric = res.lyric
+        console.log(this.lyric)
+      }
+    })
   }
 }
 
