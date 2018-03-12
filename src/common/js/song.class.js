@@ -1,14 +1,14 @@
-import {getPlayKey} from '@/api/singer'
+// import {getPlayKey} from '@/api/singer'
 import {ERR_OK} from '@/api/config'
 import {getLyric} from '@/api/song'
 import {Base64} from 'js-base64'
 
-let key = ''
-getPlayKey().then((res) => {
-  if (res.code === ERR_OK) {
-    key = res.key
-  }
-})
+// let key = ''
+// getPlayKey().then((res) => {
+//   if (res.code === ERR_OK) {
+//     key = res.key
+//   }
+// })
 
 export default class Song {
   constructor({id, mid, singer, name, album, duration, image, url}){
@@ -40,7 +40,8 @@ export default class Song {
 }
 
 export function createSong(musicData) {
-  const playUrl = 'http://119.6.238.25:9999/dl.stream.qqmusic.qq.com/';
+  // C100004cNNNW0QG6RR.m4a?fromtag=32
+  const playUrl = 'http://isure.stream.qqmusic.qq.com/';
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -49,7 +50,7 @@ export function createSong(musicData) {
     album: musicData.albumname,
     duration: musicData.interval,
     image: `http://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: playUrl + 'C400' + musicData.songmid + '.m4a?guid=9282438640&vkey=' + key + '&uin=0&fromtag=66'
+    url: playUrl + 'C100' + musicData.songmid + '.m4a?fromtag=32'
   })
 }
 
