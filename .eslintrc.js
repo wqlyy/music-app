@@ -32,7 +32,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     "no-unused-vars": [2, { 
       // 允许声明未使用变量
-      "vars": "local",
+      "vars": "all",
       // 参数不检查
       "args": "none" 
     }],
