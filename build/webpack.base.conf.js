@@ -68,7 +68,12 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        test: /\.svg$/,
+        loader: 'icon-maker-loader',
+        include: path.join(__dirname, 'icons') // To avoid clash of svgs
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
