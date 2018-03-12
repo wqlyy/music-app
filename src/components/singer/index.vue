@@ -30,12 +30,13 @@ export default {
         path: `/singer/${singer.id}`
       })
       this.setSinger(singer)
-      // console.log(singer)
+      console.log(singer)
     },
     _getSingerList() {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
           this.singers = this._normalizeSinger(res.data.list);
+          // console.log(this.singers)
         }
       })
     },
