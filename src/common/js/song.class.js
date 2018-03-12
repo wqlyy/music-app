@@ -7,6 +7,7 @@ getPlayKey().then((res) => {
     key = res.key
   }
 })
+
 export default class Song {
   constructor({id, mid, singer, name, album, duration, image, url}){
     this.id = id;
@@ -21,7 +22,7 @@ export default class Song {
 }
 
 export function createSong(musicData) {
-  const playUrl = 'http://dl.stream.qqmusic.qq.com/';
+  const playUrl = 'http://119.6.238.25:9999/dl.stream.qqmusic.qq.com/';
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -30,7 +31,7 @@ export function createSong(musicData) {
     album: musicData.albumname,
     duration: musicData.interval,
     image: `http://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: playUrl + 'C400' + musicData.songmid + '.m4a?guid=9282438640&vkey=' + key + '&uin=0&fromtag=999'
+    url: playUrl + 'C400' + musicData.songmid + '.m4a?guid=9282438640&vkey=' + key + '&uin=0&fromtag=66'
   })
 }
 
