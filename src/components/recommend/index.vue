@@ -1,35 +1,36 @@
 <template>
   <div class="recommend" ref="recommend">
-      <scroll ref="scroll" class="recommend-content" :data="discList">
-        <div>
-          <div v-if="recommendSlider.length" class="slider-wrapper">
-            <slider>
-              <div v-for="item in recommendSlider" :key="item.id">
-                <a :href="item.linkUrl">
-                  <img class="needsclick" :src="item.picUrl" @load="laodIamge" />
-                </a>
+    <scroll ref="scroll" class="recommend-content" :data="discList">
+      <div>
+        <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
+          <slider>
+            <div v-for="(item, index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img class="needsclick" @load="loadImage" :src="item.picUrl">
+              </a>
+            </div>
+          </slider>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li @click="selectItem(item)" v-for="(item, index) in discList" class="item" :key="index">
+              <div class="icon">
+                <img width="60" height="60" v-lazy="item.imgurl">
               </div>
-            </slider>
-          </div>
-          <div class="recommend-list">
-            <h1 class="list-title">热门歌单推荐</h1>
-            <ul>
-              <li v-for="item in discList" :key="item.dissid" class="item">
-                <div class="icon">
-                  <img width="60" height="60" v-lazy="item.imgurl" :alt="item.dissname">
-                </div>
-                <div class="text">
-                  <h2 class="name" v-html="item.creator.name"></h2>
-                  <p class="desc" v-html="item.dissname"></p>
-                </div>
-              </li>
-            </ul>
-          </div>
+              <div class="text">
+                <h2 class="name" v-html="item.dissname"></h2>
+                <p class="desc" v-html="item.creator.name"></p>
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="loading-container" v-show="!discList.length">
-          <loading></loading>
-        </div>
-      </scroll>
+      </div>
+      <div class="loading-container" v-show="!discList.length">
+        <loading></loading>
+      </div>
+    </scroll>
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -40,52 +41,62 @@ import Slider from '@/base/slider'
 import Scroll from '@/base/scroll'
 import Loading from '@/base/loading'
 import { playlistMixin } from '@/common/js/mixin'
+import { mapMutations } from 'vuex'
 
 export default {
   mixins: [playlistMixin],
-  components: {
-    Slider,
-    Scroll,
-    Loading
-  },
   data() {
     return {
-      recommendSlider: [],
+      recommends: [],
       discList: []
     }
   },
   created() {
-    this._getRecommend();
-    this._getDiscList();
+    this._getRecommend()
+
+    this._getDiscList()
   },
   methods: {
     handlePlaylist(playlist) {
       const bottom = playlist.length > 0 ? '60px' : ''
+
       this.$refs.recommend.style.bottom = bottom
       this.$refs.scroll.refresh()
     },
+    loadImage() {
+      if (!this.checkloaded) {
+        this.checkloaded = true
+        this.$refs.scroll.refresh()
+      }
+    },
+    selectItem(item) {
+      this.$router.push({
+        path: `/recommend/${item.dissid}`
+      })
+      this.setDisc(item)
+    },
     _getRecommend() {
       getRecommend().then((res) => {
-        if (res.code === ERR_OK){
-          // console.log(res.data.slider);
-          this.recommendSlider = res.data.slider;
+        if (res.code === ERR_OK) {
+          this.recommends = res.data.slider
         }
       })
     },
     _getDiscList() {
       getDiscList().then((res) => {
         if (res.code === ERR_OK) {
-          // console.log(res.data.list);
-          this.discList = res.data.list;
+          this.discList = res.data.list
         }
       })
     },
-    laodIamge() {
-      if (!this.checkLoaded) {
-        this.$refs.scroll.refresh();
-        this.checkLoaded = true;
-      }
-    }
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
+  },
+  components: {
+    Slider,
+    Loading,
+    Scroll
   }
 }
 </script>

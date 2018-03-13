@@ -97,9 +97,31 @@ apiRoutes.get('/lyric', (req,res)=>{
     params: req.query
   }).then((response) => {
     var ret = response.data;
-    if (typeof ret) {
+    if (typeof ret === 'string') {
       var reg = /^\w+\(({[^()]+})\)$/;
       var matches = ret.match(reg);
+      if (matches) {
+        ret = JSON.parse(matches[1])
+      }
+    }
+    res.json(ret)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+apiRoutes.get('/getSongList', (req,res)=>{
+  const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+  axios.get(url, {
+    headers: {
+      referer: `https://y.qq.com/n/yqq/playsquare/${req.query.disstid}.html`
+    },
+    params: req.query
+  }).then((response) => {
+    var ret = response.data;
+    if (typeof ret === 'string') {
+      var reg = /^\w+\(({.+})\)$/;
+      var matches = ret.match(reg);
+      console.log(matches)
       if (matches) {
         ret = JSON.parse(matches[1])
       }
