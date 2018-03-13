@@ -16,7 +16,7 @@
           <div class="search-history" v-show="searchHistory.length">
             <h1 class="title">
               <span class="text">搜索历史</span>
-              <span class="clear">
+              <span class="clear" @click="clearAll">
                 <i class="icon-clear"></i>
               </span>
             </h1>
@@ -73,6 +73,9 @@ export default {
     deleteOne(item) {
       this.deleteSearchHistory(item)
     },
+    clearAll() {
+      this.clearSearchHistory()
+    },
     blurInput() {
       this.$refs.searchBox.blur()
     },
@@ -85,7 +88,8 @@ export default {
     },
     ...mapActions([
       'saveSearchHistory',
-      'deleteSearchHistory'
+      'deleteSearchHistory',
+      'clearSearchHistory'
     ])
   }
 }
