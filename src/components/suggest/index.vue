@@ -1,7 +1,9 @@
 <template>
   <scroll ref="suggest"
           class="suggest"
+          :pullUp="pullUp"
           :data="result"
+          @scrollToEnd="searchMore"
   >
     <ul class="suggest-list">
       <li class="suggest-item" v-for="(item, index) in result" :key="index">
@@ -12,7 +14,7 @@
           <p class="text" v-html="getDisplayName(item)"></p>
         </div>
       </li>
-      <!-- <loading v-show="hasMore" title=""></loading> -->
+      <loading v-show="hasMore" title=""></loading>
     </ul>
     <!-- <div v-show="!hasMore && !result.length" class="no-result-wrapper">
       <no-result title="抱歉，暂无搜索结果"></no-result>
@@ -25,8 +27,10 @@ import {search} from '@/api/search'
 import {ERR_OK} from '@/api/config'
 import {createSong} from '@/common/js/song.class'
 import Scroll from '@/base/scroll'
+import Loading from '@/base/loading'
 
 const TYPE_SINGER = 'singer'
+const PRE_PAGE = 20
 
 export default {
   props: {
@@ -42,7 +46,9 @@ export default {
   data() {
     return {
       page: 1,
-      result: []
+      result: [],
+      pullUp: true,
+      hasMore: true
     }
   },
   created() {
@@ -50,11 +56,31 @@ export default {
   },
   methods: {
     _search() {
-      search(this.query, this.page, this.showSinger).then((res) => {
+      this.hasMore = true;
+      search(this.query, this.page, this.showSinger, PRE_PAGE).then((res) => {
         if (res.code === ERR_OK) {
-          this.result = this._getResult(res.data)
+          this.result = this._getResult(res.data);
+          this._checkMore(res.data)
         }
       })
+    },
+    searchMore() {
+      if (!this.hasMore) {
+        return
+      }
+      this.page++;
+      search(this.query, this.page, this.showSinger, PRE_PAGE).then((res) => {
+        if (res.code === ERR_OK) {
+          this.result = this.result.concat(this._getResult(res.data));
+          this._checkMore(res.data)
+        }
+      })
+    },
+    _checkMore(data) {
+      const song = data.song;
+      if (!song.list.length || (song.curnum + song.curpage * PRE_PAGE) > song.totalnum) {
+        this.hasMore = false;
+      }
     },
     _getResult(data) {
       let ret = [];
@@ -96,7 +122,8 @@ export default {
     }
   },
   components: {
-    Scroll
+    Scroll,
+    Loading
   }
 }
 </script>
