@@ -131,6 +131,33 @@ apiRoutes.get('/getSongList', (req,res)=>{
     console.log(e)
   })
 })
+apiRoutes.get('/getRankList', (req,res)=>{
+  const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg'
+  axios.get(url, {
+    headers: {
+      referer: `https://c.y.qq.com/`
+    },
+    params: req.query
+  }).then((response) => {
+    var ret = response.data;
+    console.log(ret.code)
+    if(ret.code === 0){
+      res.json({
+        code: 0,
+        msg: '',
+        list: ret.data.topList
+      })
+    }else{
+      res.json({
+        code: 1,
+        msg: '数据请求失败',
+        list: []
+      })
+    }
+  }).catch((e) => {
+    console.log(e)
+  })
+})
 app.use('/api', apiRoutes)
 app.listen(8081,() => {
   console.log('api loadded')
