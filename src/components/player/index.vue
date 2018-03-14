@@ -295,6 +295,7 @@ export default {
         }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         console.log(this.currentLyric)
+        console.log(lyric)
         if (this.playing) {
           this.currentLyric.play()
         }
@@ -305,8 +306,8 @@ export default {
       })
     },
     handleLyric({lineNum, txt}) {
-      console.log(txt)
-      console.log(lineNum)
+      // console.log(txt)
+      // console.log(lineNum)
       this.currentLineNum = lineNum
       if (lineNum > 5) {
         let lineEl = this.$refs.lyricLine[lineNum - 5]
