@@ -4,8 +4,8 @@
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
-            <span class="text"></span>
+            <i @click="changeMode" class="icon" :class="iconMode"></i>
+            <span class="text">{{modeText}}</span>
             <span @click="showConfirm" class="clear"><i class="icon-clear"></i></span>
           </h1>
         </div>
@@ -40,24 +40,24 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 import Scroll from '@/base/scroll'
 import {playMode} from '@/common/js/config'
 import Confirm from '@/base/confirm'
+import {playerMixin} from '@/common/js/mixin'
+
 
 export default {
+  mixins: [playerMixin],
   data() {
     return {
       showFlag: false
     }
   },
   computed: {
-    ...mapGetters([
-      'sequenceList',
-      'currentSong',
-      'playlist',
-      'mode'
-    ])
+    modeText() {
+      return this.mode === playMode.sequence ? '顺序播放' : this.mode === playMode.random ? '随机播放' : '单曲循环'
+    }
   },
   methods: {
     show() {
@@ -104,10 +104,6 @@ export default {
         this.hide()
       }
     },
-    ...mapMutations({
-      'setCurrentIndex': 'SET_CURRENT_INDEX',
-      'setPlayingState': 'SET_PLAYING_STATE'
-    }),
     ...mapActions([
       'deleteSong',
       'deleteSongList'
@@ -149,7 +145,7 @@ export default {
         transform: translate3d(0, 100%, 0);
       }
     }
-    &.list-fade-enter{}
+    // &.list-fade-enter{}
     .list-wrapper{
       position: absolute;
       left: 0;
@@ -158,8 +154,9 @@ export default {
       background-color: $color-highlight-background;
       .list-header{
         position: relative;
-        padding: 20px 30px 10px 20px;
+        padding: 20px 30px 24px 20px;
         .title{
+          margin: 0 auto;
           display: flex;
           align-items: center;
           .icon{
