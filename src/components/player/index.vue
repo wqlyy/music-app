@@ -101,7 +101,7 @@
 
 <script>
 import animations from 'create-keyframe-animation'
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {prefixStyle} from '@/common/js/dom'
 import ProgressBar from '@/base/progress-bar'
 import ProgressCircle from '@/base/progress-circle'
@@ -162,6 +162,9 @@ export default {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN'
     }),
+    ...mapActions([
+      'savePlayHistory'
+    ]),
     onPercentChange(percent) {
       const currentTime = this.currentSong.duration * percent
       this.$refs.audio.currentTime = currentTime;
@@ -272,6 +275,7 @@ export default {
     },
     ready() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong)
     },
     error(e) {
       console.error(e.target.error.message)

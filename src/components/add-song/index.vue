@@ -50,7 +50,7 @@ import TopTip from '@/base/top-tip'
 import Suggest from '@/components/suggest'
 import {searchMixin} from '@/common/js/mixin'
 import {mapGetters, mapActions} from 'vuex'
-import Song from '@/common/js/song'
+import Song from '@/common/js/song.class'
 
 export default {
   mixins: [searchMixin],
