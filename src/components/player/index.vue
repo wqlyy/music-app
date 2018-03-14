@@ -294,6 +294,7 @@ export default {
           return
         }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
+        console.log(this.currentLyric)
         if (this.playing) {
           this.currentLyric.play()
         }
@@ -304,12 +305,14 @@ export default {
       })
     },
     handleLyric({lineNum, txt}) {
+      console.log(txt)
+      console.log(lineNum)
       this.currentLineNum = lineNum
       if (lineNum > 5) {
         let lineEl = this.$refs.lyricLine[lineNum - 5]
-        this.$refs.lyricList.scrollToElement(lineEl, 1000)
+        this.$refs.lyricList && this.$refs.lyricList.scrollToElement(lineEl, 1000)
       } else {
-        this.$refs.lyricList.scrollTo(0, 0, 1000)
+        this.$refs.lyricList && this.$refs.lyricList.scrollTo(0, 0, 1000)
       }
       this.playingLyric = txt
     },
