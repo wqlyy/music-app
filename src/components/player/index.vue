@@ -89,12 +89,13 @@
             <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
-     <audio @ended="end" @timeupdate="updateTime" @error="error" @canplay="ready" ref="audio" :src="currentSong.url"></audio>
+    <play-list ref="playlist"></play-list>
+    <audio @ended="end" @timeupdate="updateTime" @error="error" @canplay="ready" ref="audio" :src="currentSong.url"></audio>
   </div>
 </template>
 
@@ -108,6 +109,7 @@ import {playMode} from '@/common/js/config'
 import {shuffle} from '@/common/js/util'
 import Lyric from 'lyric-parser'
 import Scroll from '@/base/scroll'
+import PlayList from '@/components/playlist'
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -116,7 +118,8 @@ export default {
   components: {
     ProgressBar,
     ProgressCircle,
-    Scroll
+    Scroll,
+    PlayList
   },
   created() {
     this.touch = {}
@@ -204,7 +207,7 @@ export default {
         }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {
-          this.currentLyric.play()
+          this.currentLyric.play(this.$refs.audio.currentTime)
         }
       }).catch(() => {
         this.currentLyric = null
@@ -214,6 +217,7 @@ export default {
     },
     handleLyric({lineNum, txt}) {
       this.currentLineNum = lineNum
+      // console.log(lineNum)
       if (lineNum > 4) {
         let lineEl = this.$refs.lyricLine[lineNum - 4]
         this.$refs.lyricList.scrollToElement(lineEl, 1000)
@@ -221,6 +225,9 @@ export default {
         this.$refs.lyricList.scrollTo(0, 0, 1000)
       }
       this.playingLyric = txt
+    },
+    showPlaylist() {
+      this.$refs.playlist.show()
     },
     format(interval) {
       interval = Math.floor(interval);
@@ -415,6 +422,9 @@ export default {
   },
   watch: {
     currentSong(newSong, oldSong) {
+      if (!newSong.id) {
+        return
+      }
       if (newSong.id === oldSong.id) {
         return;
       }
@@ -424,7 +434,7 @@ export default {
       setTimeout(() => {
         this.$refs.audio.play()
         this.getLyric()
-      }, 1000)
+      }, 30)
     },
     playing(newPlaying) {
       const audio = this.$refs.audio;
