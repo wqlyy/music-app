@@ -6,6 +6,7 @@ const app = express()
 const apiRoutes = express.Router()
 apiRoutes.get('/getDiscList', (req,res)=>{
   const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+  console.log(`加载${url}数据`)
   axios.get(url, {
     headers: {
       referer: 'https://y.qq.com/portal/playlist.html',
@@ -20,6 +21,7 @@ apiRoutes.get('/getDiscList', (req,res)=>{
 })
 apiRoutes.get('/lyric', (req,res)=>{
   const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+  console.log(`加载${url}数据`)
   axios.get(url, {
     headers: {
       referer: 'https://y.qq.com/',
@@ -42,6 +44,7 @@ apiRoutes.get('/lyric', (req,res)=>{
 })
 apiRoutes.get('/getSongList', (req,res)=>{
   const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+  console.log(`加载${url}数据`)
   axios.get(url, {
     headers: {
       referer: `https://y.qq.com/n/yqq/playsquare/${req.query.disstid}.html`
@@ -63,6 +66,7 @@ apiRoutes.get('/getSongList', (req,res)=>{
 })
 apiRoutes.get('/getRankList', (req,res)=>{
   const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg'
+  console.log(`加载${url}数据`)
   axios.get(url, {
     headers: {
       referer: `https://c.y.qq.com/`
@@ -70,7 +74,6 @@ apiRoutes.get('/getRankList', (req,res)=>{
     params: req.query
   }).then((response) => {
     var ret = response.data;
-    console.log(ret.code)
     if(ret.code === 0){
       res.json({
         code: 0,

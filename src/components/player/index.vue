@@ -309,8 +309,8 @@ export default {
       // console.log(txt)
       // console.log(lineNum)
       this.currentLineNum = lineNum
-      if (lineNum > 5) {
-        let lineEl = this.$refs.lyricLine[lineNum - 5]
+      if (lineNum > 3) {
+        let lineEl = this.$refs.lyricLine[lineNum - 3]
         this.$refs.lyricList && this.$refs.lyricList.scrollToElement(lineEl, 1000)
       } else {
         this.$refs.lyricList && this.$refs.lyricList.scrollTo(0, 0, 1000)
